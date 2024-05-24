@@ -1,15 +1,16 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Card, CardContent, Typography, Avatar, Button, IconButton } from '@mui/material';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { makeStyles } from '@mui/styles';
 import Iconify from '@components/iconify';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { PATH_DASHBOARD } from '@routes/paths';
+import { getAllVideosAsync, getVideoByIdAsync } from '@redux/services';
+import { useDispatch, useSelector } from 'react-redux';
+import Scrollbar from '@components/scrollbar/Scrollbar';
+import { hideScrollbarY } from '@utils/cssStyles';
 import VideoCard from './components/VideoCard';
 import VideoPlayer from './components/VideoPlayer';
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,73 +43,125 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 'calc(100vh - 100px)',
     overflowY: 'auto',
     padding: theme.spacing(2),
-    marginBottom:1
+    marginBottom: 1,
   },
 }));
 
-const data = [
-  { title: 'How does a browser work?', author: 'Maluma', views: '100K Views', time: '18 hours ago', avatar: 'path/to/avatar1.jpg', image: 'path/to/image1.jpg' },
-  { title: 'Building a multi million dollar app', author: 'Jonas Brothers', views: '100K Views', time: '18 hours ago', avatar: 'path/to/avatar2.jpg', image: 'path/to/image2.jpg' },
-  // Add more data here
-];
 
-
-
-function App() {
+function VideoDescription() {
   const classes = useStyles();
+
   const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const dispatch = useDispatch();
+
+  const { isVideoLoading, videoById, videosData } = useSelector((state) => state?.videos);
+
+  const fetchVideo = async () => {
+    await dispatch(getVideoByIdAsync(id));
+  };
+
+  const fetchVideosForSide = async () => {
+    await dispatch(getAllVideosAsync());
+  };
+
+
+  useEffect(() => {
+    fetchVideo();
+    fetchVideosForSide()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log('videoById', videoById);
+
+  const { title, videoFile, views, createdAt, owner, description } = videoById;
+
+  // Custom function to calculate time since the video was uploaded
+  const timeSinceUpload = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return `${Math.floor(interval)} years ago`;
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return `${Math.floor(interval)} months ago`;
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return `${Math.floor(interval)} days ago`;
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return `${Math.floor(interval)} hours ago`;
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return `${Math.floor(interval)} minutes ago`;
+    }
+    return `${Math.floor(seconds)} seconds ago`;
+  };
 
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={7.5}>
           <div className={classes.videoSection}>
-            <VideoPlayer url='https://www.youtube.com/watch?v=zQYtiU7qPso' />
+            <VideoPlayer url={videoFile} />
           </div>
           <Card>
             <CardContent>
-              <Typography variant="h6">Lex Fridman plays Red Dead Redemption 2</Typography>
+              <Typography variant="h6">{title}</Typography>
               <Typography variant="body2" color="textSecondary">
-                109,067 Views • 18 hours ago
+                {views} Views • {timeSinceUpload(createdAt)}
               </Typography>
               <div className={classes.actions}>
-                <Avatar src="path/to/lex-fridman-avatar.jpg" className={classes.avatar} onClick={()=>navigate(PATH_DASHBOARD.profile.user('sandeep'))} />
+                <Avatar
+                  src={owner?.avatar}
+                  className={classes.avatar}
+                  onClick={() => navigate(PATH_DASHBOARD.profile.user(owner?.userName))}
+                />
                 <Typography variant="body2" color="textSecondary">
-                  Lex Fridman
+                  {owner?.fullName}
                 </Typography>
                 <Button variant="contained" color="primary" style={{ marginLeft: 'auto' }}>
                   Follow
                 </Button>
               </div>
               <Typography variant="body2" color="textSecondary">
-                TimUrban is the author of the blog Wait But Why and a new book Whats Our Problem? A Self-Help Book for Societies...
+                {description}
               </Typography>
               <div className={classes.actions}>
                 <IconButton>
-             <Iconify icon='icon-park-solid:like' />
+                  <Iconify icon="icon-park-solid:like" />
                 </IconButton>
                 <IconButton>
-                 <Iconify icon='heroicons:share-solid' />
+                  <Iconify icon="heroicons:share-solid" />
                 </IconButton>
               </div>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4.5} className={classes.videoList}>
-          {data.map((item, index) => (
+        <Grid item xs={12} md={4.5} sx={{  ...hideScrollbarY,}} className={classes.videoList}>
+          {/* <Scrollbar> */}
+          {videosData.map((item, index) => (
             <VideoCard
               key={index}
-              title={item.title}
-              author={item.author}
+              thumbnail={item?.thumbnail}
+              title={item?.title}
+              author={item?.owner?.fullName}
               views={item.views}
-              time={item.time}
-              avatar={item.avatar}
+              time={timeSinceUpload(item?.createdAt)}
+              avatar={item?.owner?.avatar}
             />
           ))}
+          {/* </Scrollbar> */}
         </Grid>
       </Grid>
     </div>
   );
 }
 
-export default App;
+export default VideoDescription;

@@ -3,6 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import productReducer from './slices/product';
 import usersReducer from './slices/users';
+import videoReducer from './slices/video.slice';
 
 export const rootPersistConfig = {
   key: 'root',
@@ -20,6 +21,7 @@ export const productPersistConfig = {
 
 const rootReducer = combineReducers({
   users: usersReducer,
+  videos: videoReducer,
   product: persistReducer(productPersistConfig, productReducer),
 });
 

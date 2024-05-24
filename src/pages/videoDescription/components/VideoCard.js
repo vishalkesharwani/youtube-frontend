@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
 import Image from '@components/image';
 
-const VideoCard = ({ title, author, views, time }) => {
+const VideoCard = ({ title, author, views, time, thumbnail }) => {
   const useStyles = makeStyles((theme) => ({
     videoCard: {
       display: 'flex',
@@ -26,7 +26,7 @@ const VideoCard = ({ title, author, views, time }) => {
     <Card className={classes.videoCard}>
       <Stack sx={{ alignItems: 'center' }}>
         <Image
-          src="https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_2.jpg"
+          src={thumbnail}
           //   ratio="16/9"
           //   width="115px"
           sx={{ p: 1, width: '155px', height: '95px' }}
@@ -40,7 +40,7 @@ const VideoCard = ({ title, author, views, time }) => {
             {author}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            {views} • {time}
+            {views} Views • {time}
           </Typography>
         </Box>
       </CardContent>
@@ -52,6 +52,7 @@ VideoCard.propTypes = {
   title: PropTypes.string,
   author: PropTypes.string,
   views: PropTypes.string,
+  thumbnail: PropTypes.string,
   time: PropTypes.string,
 };
 
