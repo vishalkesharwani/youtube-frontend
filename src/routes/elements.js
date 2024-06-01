@@ -13,6 +13,8 @@ export const LoginPage = Loadable(lazy(() => import('@pages/auth/pages/LoginPage
 export const Home = Loadable(lazy(() => import('@pages/home/Home')));
 export const VideoDescription = Loadable(lazy(() => import('@pages/videoDescription/VideoDescription')));
 export const MyProfile = Loadable(lazy(() => import('@pages/profile/Profile')));
+export const MyVideo = Loadable(lazy(() => import('@pages/MyVideo/MyVideo')));
+export const UploadVideos = Loadable(lazy(() => import('@pages/MyVideo/UploadVideo')));
 
 
 export const User = Loadable(lazy(() => import('@pages/users/pages/User')));

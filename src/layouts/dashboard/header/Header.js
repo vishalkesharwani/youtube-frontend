@@ -136,7 +136,10 @@ export default function Header({ onOpenNav }) {
           px: { lg: 5 },
           // backgroundColor: 'primary.main',
           background: '#000',
-          borderBottom: '1px soild #fff !important',
+          borderBottom: '1px soild !important',
+          '&.MuiToolbar-root':{
+            borderBottom:'1px solid'
+          }
         }}
       >
         {renderContent}

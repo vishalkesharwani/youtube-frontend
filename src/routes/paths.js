@@ -31,6 +31,11 @@ export const PATH_DASHBOARD = {
     edit: (id) => path(ROOTS_DASHBOARD, `/user/${id}/edit`),
     view: (id) => path(ROOTS_DASHBOARD, `/user/${id}/view`),
   },
-
+  video:{
+    root: path(ROOTS_DASHBOARD,'/video'),
+    list: path(ROOTS_DASHBOARD, '/video/list'),
+    new: path(ROOTS_DASHBOARD, '/video/new'),
+    edit: (id) => path(ROOTS_DASHBOARD, `/video/${id}/edit`),
+  }
 
 };

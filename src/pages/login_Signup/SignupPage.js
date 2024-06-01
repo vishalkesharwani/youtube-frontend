@@ -67,7 +67,7 @@ const SignupPage = ({ onClose, setShowLogin, showLogin }) => {
         }
       });
       const response = await axios.post(
-        `${process.env.REACT_APP_HOST_API_KEY}user/register`,
+        `https://youtubeapi.vishalkesharwani.live/api/v1/user/register`,
         dataToSend,
         {
           headers: {

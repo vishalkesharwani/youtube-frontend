@@ -11,7 +11,9 @@ import { PATH_AFTER_LOGIN } from '../config-global';
 import { LoginPage, Page404,
   //   CategoryList, Category ,Course , CourseList, ChatBot, 
    Home, VideoDescription, User, UserList,
-   MyProfile} from './elements';
+   MyProfile,
+   MyVideo,
+   UploadVideos} from './elements';
 
 export default function Router() {
   return useRoutes([
@@ -52,6 +54,17 @@ export default function Router() {
         { path: 'description/:id', element: <VideoDescription />, index: true },
         { path: 'myprofile', element: <MyProfile />, index: true },
         { path: 'profile/:id', element: <MyProfile />, index: true },
+        // { path: 'myvideo', element: <MyVideo />, index: true },
+        // { path: 'upload', element: <MyVideo />, index: true },
+        {
+          path: 'video',
+          children: [
+            { element: <Navigate to="/dashboard/video/list" replace />, index: true },
+            { path: 'list', element: <MyVideo /> },
+            { path: 'new', element: <UploadVideos /> },
+            { path: ':id/edit', element: <UploadVideos /> },
+          ],
+        },
       ],
     },
     {

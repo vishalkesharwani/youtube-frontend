@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Dialog, Button, DialogTitle, DialogActions, DialogContent } from '@mui/material';
+import { Dialog, Button, DialogTitle, DialogActions, DialogContent, Slide } from '@mui/material';
+import { forwardRef } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -13,8 +14,9 @@ ConfirmDialog.propTypes = {
 };
 
 export default function ConfirmDialog({ title, content, action, open, onClose, ...other }) {
+  const Transition = forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
+    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}      TransitionComponent={Transition}>
       <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
 
       {content && <DialogContent sx={{ typography: 'body2' }}> {content} </DialogContent>}

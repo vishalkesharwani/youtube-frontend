@@ -31,6 +31,10 @@ const navConfig = [
         title: 'My Profile',
         path: PATH_DASHBOARD.profile.root,
         icon: ICONS.home,
+      },{
+        title: 'My Videos',
+        path: PATH_DASHBOARD.video.root,
+        icon: ICONS.home,
       }] : []),
     ],
   },

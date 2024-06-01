@@ -1,13 +1,18 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
+  deleteVideoAsync,
   getAllVideosAsync,
   getVideoByIdAsync,
+  getVideoForUserAsync,
 } from '../services';
 
 const initialState = {
   isVideoLoading: false,
+  isDeleting: false,
   videosData: [],
-  videoById:{}
+  videoById: {},
+  userVidoes: [],
+  totalCount: 0,
 };
 
 const videoSlice = createSlice({
@@ -43,6 +48,35 @@ const videoSlice = createSlice({
     });
     // -------------
 
+
+    // Get Video By id ----------
+    builder.addMatcher(isAnyOf(getVideoForUserAsync.pending), (state, { payload }) => {
+      state.isVideoLoading = true;
+    });
+    builder.addMatcher(isAnyOf(getVideoForUserAsync.fulfilled), (state, { payload }) => {
+      state.isVideoLoading = false;
+      state.userVidoes = payload?.data;
+      state.totalCount = payload?.totalData;
+    });
+    builder.addMatcher(isAnyOf(getVideoForUserAsync.rejected), (state, { payload }) => {
+      state.isVideoLoading = false;
+      state.totalCount = 0;      
+      state.userVidoes = [];
+    });
+    // -------------
+
+    // Get Video By id ----------
+    builder.addMatcher(isAnyOf(deleteVideoAsync.pending), (state, { payload }) => {
+      state.isDeleting = true;
+    });
+    builder.addMatcher(isAnyOf(deleteVideoAsync.fulfilled), (state, { payload }) => {
+      state.isDeleting = false;
+    });
+    builder.addMatcher(isAnyOf(deleteVideoAsync.rejected), (state, { payload }) => {
+      state.isDeleting = false;
+      state.userVidoes = [];
+    });
+    // -------------
   },
 });
 
