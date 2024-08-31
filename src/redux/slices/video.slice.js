@@ -1,5 +1,6 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
+  addViewsToVideoAsync,
   deleteVideoAsync,
   getAllVideosAsync,
   getVideoByIdAsync,
@@ -9,6 +10,7 @@ import {
 const initialState = {
   isVideoLoading: false,
   isDeleting: false,
+  isAdding:false,
   videosData: [],
   videoById: {},
   userVidoes: [],
@@ -77,6 +79,19 @@ const videoSlice = createSlice({
       state.userVidoes = [];
     });
     // -------------
+
+
+       // add views ----------
+       builder.addMatcher(isAnyOf(addViewsToVideoAsync.pending), (state, { payload }) => {
+        state.isAdding = true;
+      });
+      builder.addMatcher(isAnyOf(addViewsToVideoAsync.fulfilled), (state, { payload }) => {
+        state.isAdding = false;
+      });
+      builder.addMatcher(isAnyOf(addViewsToVideoAsync.rejected), (state, { payload }) => {
+        state.isAdding = false;
+      });
+      // -------------
   },
 });
 

@@ -56,9 +56,9 @@ export default function AccountPopover({userImage}) {
 
   const handleLogout = async () => {
     try {
-      // logout();
+
       dispatch(logoutUserAsync()).then((res)=>{
-console.log('res', res)
+
         if(res?.payload?.statusCode === 200){
            navigate(PATH_DASHBOARD.home, { replace: true });
            localStorage.clear()

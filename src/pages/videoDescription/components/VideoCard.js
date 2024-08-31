@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { makeStyles } from '@mui/styles';
 import Image from '@components/image';
+import { useNavigate } from 'react-router';
 
-const VideoCard = ({ title, author, views, time, thumbnail }) => {
+const VideoCard = ({ title, author, views, time, thumbnail,videoId }) => {
+
+  const navigate = useNavigate();
+  
   const useStyles = makeStyles((theme) => ({
     videoCard: {
       display: 'flex',
@@ -23,7 +27,7 @@ const VideoCard = ({ title, author, views, time, thumbnail }) => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.videoCard}>
+    <Card className={classes.videoCard} onClick={()=>navigate(`/dashboard/description/${videoId}`)}>
       <Stack sx={{ alignItems: 'center' }}>
         <Image
           src={thumbnail}
@@ -54,6 +58,7 @@ VideoCard.propTypes = {
   views: PropTypes.string,
   thumbnail: PropTypes.string,
   time: PropTypes.string,
+  videoId: PropTypes.string,
 };
 
 export default VideoCard;

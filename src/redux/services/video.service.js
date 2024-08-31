@@ -34,3 +34,11 @@ export const getVideoByIdAsync = createAsyncThunk('video/getVideoByIdAsync', asy
       method: 'delete',
     })
   );
+
+  export const addViewsToVideoAsync = createAsyncThunk('video/addViewsToVideoAsync', async (id, toolkit) =>
+    AxiosClient({
+      toolkit,
+      url: `/view/${id}`,
+      method: 'delete',
+    })
+  );

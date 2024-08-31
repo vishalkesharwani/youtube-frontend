@@ -105,7 +105,6 @@ export default function UserListPage() {
   };
 
   const handleEditRow = (row) => {
-    console.log('row', row)
     navigate(PATH_DASHBOARD.video.edit(row?._id), { state: row });
   };
 

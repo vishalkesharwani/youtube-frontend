@@ -2,8 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import AxiosClient from '@utils/axios';
 import axios from 'axios';
 
-
-
 export const getUsersAsync = createAsyncThunk('users/getUsersAsync', async (params, toolkit) =>
   AxiosClient({
     toolkit,
