@@ -9,6 +9,7 @@ import { UserForm } from '../components';
 
 export default function UserCreatePage() {
   const { themeStretch } = useSettingsContext();
+  console.log('vishal');
 
   const { id } = useParams();
   const { pathname = '', state } = useLocation();
